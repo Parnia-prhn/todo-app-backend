@@ -1,14 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type TaskDocument = Task & Document;
 
 @Schema()
 export class Task {
-  @Prop({ required: true, unique: false })
+  @Prop({ required: true })
   title: string;
 
-  @Prop({ required: false })
+  @Prop()
   description: string;
 
   @Prop({ required: true })
@@ -17,14 +17,17 @@ export class Task {
   @Prop({ required: true })
   completed: boolean;
 
-  @Prop({ required: false })
+  @Prop()
   completedAt: Date;
 
-  @Prop({ required: false })
+  @Prop()
   reminderAt: Date;
 
   @Prop({ default: Date.now })
   createdAt: Date;
+
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  user: Types.ObjectId;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);
